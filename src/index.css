@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+body {
+  overscroll-behavior: none; /* Disable overscroll behavior */
+  height: 100%;
+}
+html {
+  height: 100%;
+}
