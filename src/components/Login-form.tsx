@@ -1,14 +1,15 @@
+import { userLgin } from '@/hooks/useAuth';
 import logo from '../assets/banner-landing.jpg'
 import {useState } from 'react'
 
 
 const Loginform = () => {
-    const [email, setEmail] = useState<string>();
-    const [password, setPassword] = useState<string>();
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
-    const submitLogin = (e: React.FormEvent): void => {
+    const submitLogin = async(e: React.FormEvent) => {
         e.preventDefault()
-        console.log({email,password})
+        await userLgin(email,password)
     }
 
   return (
@@ -25,8 +26,8 @@ const Loginform = () => {
         <div className='flex flex-col justify-center items-center bg-[#3D404550]'>
             <form action="" className='grid grid-rows-2 gap-4 py-4 font-extralight w-1/3' onSubmit={submitLogin}>
                 <label className='text-center uppercase font-bold'>User login</label>
-                <input type="email" placeholder='Email' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setEmail(e.target.value)}/>
-                <input type="password" placeholder='Password' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setPassword(e.target.value)}/>
+                <input required type="email" placeholder='Email' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setEmail(e.target.value)}/>
+                <input required type="password" placeholder='Password' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setPassword(e.target.value)}/>
                 <a href="#" className='text-right text-[12px] hover:underline duration-500'>Forgot password ?</a>
                 <button type='submit' className='rounded-sm bg-[#0657D0] p-1'>LOGIN</button>
             </form>

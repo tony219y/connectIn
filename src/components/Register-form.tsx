@@ -1,15 +1,16 @@
-import {useState } from 'react'
+import { useState } from 'react'
 import logo from '../assets/banner-landing.jpg'
+import { userRegister } from '@/hooks/useAuth';
 
 const Registerform = () => {
-    const [username, setUsername] = useState<string>();
-    const [email, setEmail] = useState<string>();
-    const [password, setPassword] = useState<string>();
-    const [passwordConfirm, setPasswordConfirm] = useState<string>();
+    const [username, setUsername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [passwordConfirm, setPasswordConfirm] = useState<string>("");
     
-    const submitRegister = (e: React.FormEvent): void => {
+    const submitRegister = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log({username,email,password,passwordConfirm})
+        await userRegister(username,email,password,passwordConfirm)
     }
 
   return (
@@ -26,12 +27,12 @@ const Registerform = () => {
         <div className='flex flex-col justify-center items-center bg-[#3D404550]'>
             <form action="" className='grid grid-rows-2 gap-4 py-4 font-extralight w-1/3' onSubmit={submitRegister}>
                 <label className='text-center uppercase font-bold'>User login</label>
-                <input type="text" placeholder='Username' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setUsername(e.target.value)}/>
-                <input type="email" placeholder='Email' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setEmail(e.target.value)}/>
-                <input type="password" placeholder='Password' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setPassword(e.target.value)}/>
-                <input type="password" placeholder='Password Confirm' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setPasswordConfirm(e.target.value)}/>
+                <input required type="text" placeholder='Username' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setUsername(e.target.value)}/>
+                <input required type="email" placeholder='Email' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setEmail(e.target.value)}/>
+                <input required type="password" placeholder='Password' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setPassword(e.target.value)}/>
+                <input required type="password" placeholder='Password Confirm' className='px-4 py-1 border text-white rounded-sm' onChange={(e)=> setPasswordConfirm(e.target.value)}/>
                 <a href="/login" className='text-left text-[12px] hover:underline duration-500'>Have an account ?</a>
-                <button type='submit' className='rounded-sm bg-[#0657D0] p-1'>LOGIN</button>
+                <button type='submit' className='rounded-sm bg-[#0657D0] p-1'>REGISTER</button>
             </form>
         </div>
     </div>
