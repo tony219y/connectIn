@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { ContentPost } from "./(components)/contentPost";
 import { FooterPost } from "./(components)/footerPost";
 import { Header } from "./(components)/headerPost";
-// import { samplePosts } from "./data/data";
 import { getPosts } from "@/hooks/usePost";
 
 const Post = () => {
@@ -12,7 +11,6 @@ const Post = () => {
       try {
         const postResponse = await getPosts();
         setPostData(postResponse);
-        console.log("postResponse", postResponse);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
@@ -38,7 +36,7 @@ const Post = () => {
   return (
     <>
       {postData.map((posts: any) => (
-        <div className="flex flex-col w-full h-auto bg-white/30 rounded-sm">
+        <div key={posts.id} className="flex flex-col w-full h-auto bg-white/30 rounded-sm">
           <Header
             username={posts.username}
             date={formatDate(posts.updatedAt)}

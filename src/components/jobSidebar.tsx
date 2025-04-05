@@ -1,3 +1,5 @@
+import { getMe } from "@/api/userServices";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 interface NavLinkItemProps {
@@ -22,7 +24,23 @@ const NavLinkItem = ({ to, label }: NavLinkItemProps) => {
 };
 
 export const JobSidebar = () => {
-  const username = "tony219y";
+  const [username, setUsername] = useState<string>("");
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
+    const fetchUsername = async () => {
+      try {
+        const response = await getMe();
+        setUsername(response.username);
+      } catch (error) {
+        console.error("Error fetching username:", error);
+      }
+    };
+    fetchUsername();
+  }, []);
 
   return (
     <div className="absolute left-0 top-0 h-screen w-[300px] bg-black px-4 text-white">

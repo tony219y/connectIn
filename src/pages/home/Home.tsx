@@ -14,7 +14,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const profileResponse = await getMe();
-        console.log("profileResponse", profileResponse);
+        // console.log("profileResponse", profileResponse);
         if (profileResponse.username) {
           setProfile(profileResponse.username);
         } else {
