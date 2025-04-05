@@ -1,16 +1,49 @@
-import { ContentPost } from "./(component)/contentPost";
-import { FooterPost } from "./(component)/footerPost";
-import { Header } from "./(component)/headerPost";
-import { samplePosts } from "./data/data";
+import { useEffect, useState } from "react";
+import { ContentPost } from "./(components)/contentPost";
+import { FooterPost } from "./(components)/footerPost";
+import { Header } from "./(components)/headerPost";
+// import { samplePosts } from "./data/data";
+import { getPosts } from "@/hooks/usePost";
+
 const Post = () => {
+  const [postData, setPostData] = useState<any>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const postResponse = await getPosts();
+        setPostData(postResponse);
+        console.log("postResponse", postResponse);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const thaiTime = date.toLocaleString("en-EN", {
+      timeZone: "Asia/Bangkok",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return thaiTime;
+
+  }
   return (
     <>
-      {samplePosts.map((posts) => (
+      {postData.map((posts: any) => (
         <div className="flex flex-col w-full h-auto bg-white/30 rounded-sm">
           <Header
             username={posts.username}
-            date={posts.date}
+            date={formatDate(posts.updatedAt)}
             tags={posts.tags}
+            postFor={posts.postFor}
           ></Header>
           <ContentPost title={posts.title} content={posts.content} />
           <hr className="flex mx-4 my-2 border border-white/30"/>

@@ -24,7 +24,7 @@ const Home = () => {
         console.error("Error fetching profile:", error);
         navigate("/login"); // If error , redirect to login
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -46,7 +46,6 @@ const Home = () => {
         </div>
         <div className="flex flex-col w-1/2 h-screen border pt-20 px-10 gap-4 overflow-y-scroll no-scrollbar">
           <CreatePost username={profile} />
-          <button className="bg-white">ME</button>
           <Post />
         </div>
       </div>
