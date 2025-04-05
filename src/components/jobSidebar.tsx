@@ -1,5 +1,4 @@
-import { getMe } from "@/api/userServices";
-import { useEffect, useState } from "react";
+import { useUser } from "@/contexts/UserContext";
 import { Link, useLocation } from "react-router-dom";
 
 interface NavLinkItemProps {
@@ -24,34 +23,18 @@ const NavLinkItem = ({ to, label }: NavLinkItemProps) => {
 };
 
 export const JobSidebar = () => {
-  const [username, setUsername] = useState<string>("");
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "/login";
-      return;
-    }
-    const fetchUsername = async () => {
-      try {
-        const response = await getMe();
-        setUsername(response.username);
-      } catch (error) {
-        console.error("Error fetching username:", error);
-      }
-    };
-    fetchUsername();
-  }, []);
+  const {user} = useUser()
 
   return (
     <div className="absolute left-0 top-0 h-screen w-[300px] bg-black px-4 text-white">
       <SidebarSection title="Job Seekers">
-        <NavLinkItem to={`/jobs/seeker-offer/${username}`} label="Offer" />
-        <NavLinkItem to={`/jobs/seeker-pending/${username}`} label="Pending" />
+        <NavLinkItem to={`/jobs/seeker-offer/${user?.username}`} label="Offer" />
+        <NavLinkItem to={`/jobs/seeker-pending/${user?.username}`} label="Pending" />
       </SidebarSection>
 
       <SidebarSection title="Recruiter">
-        <NavLinkItem to={`/jobs/recruiter-applicant/${username}`} label="Applicant" />
-        <NavLinkItem to={`/jobs/recruiter-pending/${username}`} label="Pending" />
+        <NavLinkItem to={`/jobs/recruiter-applicant/${user?.username}`} label="Applicant" />
+        <NavLinkItem to={`/jobs/recruiter-pending/${user?.username}`} label="Pending" />
       </SidebarSection>
     </div>
   );

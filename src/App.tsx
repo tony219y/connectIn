@@ -10,6 +10,7 @@ import SeekersPending from "./pages/jobs/seeker_pending";
 import RecruiterApplicant from "./pages/jobs/recruiter_applicant";
 import RecruiterPending from "./pages/jobs/recruiter_pending";
 import { Toaster } from "sonner";
+import { UserProvider } from "./contexts/UserContext";
 
 // ✅ Layout ที่มี Navbar
 const MainLayout = () => (
@@ -32,41 +33,43 @@ const JobLayout = () => (
 
 function App() {
   return (
-    <BrowserRouter>
-    <Toaster />
-      <Routes>
-        {/* Navbar แยกกัน */}
-        <Route path="/" element={<Landing />} />
-        {/* ✅ มี Navbar */}
-        <Route element={<MainLayout />}>
-          <Route path="/home" element={<Home />} />
-        </Route>
+    <UserProvider>
+      <BrowserRouter>
+        <Toaster />
+        <Routes>
+          {/* Navbar แยกกัน */}
+          <Route path="/" element={<Landing />} />
+          {/* ✅ มี Navbar */}
+          <Route element={<MainLayout />}>
+            <Route path="/home" element={<Home />} />
+          </Route>
 
-        {/* ✅ มี Navbar + JobSidebar */}
-        <Route element={<JobLayout />}>
-          <Route
-            path="/jobs/seeker-offer/:username"
-            element={<SeekersOffer />}
-          />
-          <Route
-            path="/jobs/seeker-pending/:username"
-            element={<SeekersPending />}
-          />
-          <Route
-            path="/jobs/recruiter-applicant/:username"
-            element={<RecruiterApplicant />}
-          />
-          <Route
-            path="/jobs/recruiter-pending/:username"
-            element={<RecruiterPending />}
-          />
-        </Route>
+          {/* ✅ มี Navbar + JobSidebar */}
+          <Route element={<JobLayout />}>
+            <Route
+              path="/jobs/seeker-offer/:username"
+              element={<SeekersOffer />}
+            />
+            <Route
+              path="/jobs/seeker-pending/:username"
+              element={<SeekersPending />}
+            />
+            <Route
+              path="/jobs/recruiter-applicant/:username"
+              element={<RecruiterApplicant />}
+            />
+            <Route
+              path="/jobs/recruiter-pending/:username"
+              element={<RecruiterPending />}
+            />
+          </Route>
 
-        {/* ❌ ไม่มี Navbar */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </BrowserRouter>
+          {/* ❌ ไม่มี Navbar */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 

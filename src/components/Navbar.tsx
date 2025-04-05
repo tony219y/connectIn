@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { AvatarProfile } from "./profile/ProfileCart";
-import { getMe } from "@/api/userServices";
+import { useUser } from "@/contexts/UserContext";
 
 const Navbar = () => {
-
+  const {user} = useUser();
   const getUsername = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -11,8 +11,7 @@ const Navbar = () => {
         window.location.href = "/login";
         return;
       }
-      const response = await getMe();
-      window.location.href = `/jobs/seeker-offer/${response.username}`;
+      window.location.href = `/jobs/seeker-offer/${user?.username}`;
       } catch (error) {
       console.error("Error fetching username:", error);
     }

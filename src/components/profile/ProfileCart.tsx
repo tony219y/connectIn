@@ -1,10 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUser } from "@/contexts/UserContext";
 
 export const AvatarProfile = () => {
+  const { user } = useUser();
+
   return (
     <Avatar className="w-10 h-10">
       <AvatarImage src="https://github.com/shadcn.png" alt="Profile avatar" />
-      <AvatarFallback>CN</AvatarFallback>
+      <AvatarFallback>{user?.username}</AvatarFallback>
     </Avatar>
   );
 };

@@ -3,11 +3,13 @@ import { AvatarProfile } from "@/components/profile/ProfileCart";
 import { Button } from "@/components/ui/button";
 import { CreatePopup } from "./CreatePopup";
 
+
 interface CreatePostProps {
   username: string;
 }
 
 const CreatePost = ({ username }: CreatePostProps) => {
+
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleOpenPopup = () => {

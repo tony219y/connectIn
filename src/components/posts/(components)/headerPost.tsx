@@ -1,52 +1,52 @@
-import { getMe } from "@/api/userServices";
+import { ApplyofferPopup } from "@/components/jobs/applyofferPopup/applyofferPopup";
 import { AvatarProfile } from "@/components/profile/ProfileCart";
 import { Badge } from "@/components/ui/badge";
-import { useEffect, useState } from "react";
+import { useUser } from "@/contexts/UserContext";
+import { useState } from "react";
 
 interface InputProps {
+  postId: string;
   username: string;
   date: string;
   tags: string[];
   postFor: string;
 }
 
-export const Header = ({ username, date, tags, postFor }: InputProps) => {
-  const [me, setMe] = useState("");
-  useEffect(() => {
-    const fetchMe = async () => {
-      try {
-        const { username } = await getMe();
-        setMe(username);
-      } catch (err) {
-        console.error("Failed to fetch user:", err);
-      }
-    };
+export const Header = ({
+  postId,
+  username,
+  date,
+  tags,
+  postFor,
+}: InputProps) => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const { user } = useUser();
 
-    fetchMe();
-  }, []);
-  const postDetails = () => {
-    console.log({ username, date, tags });
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
   };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   return (
-    <div className="flex  h-fit w-full px-4 py-2 items-center rounded-sm bg-transparent text-white max-md:flex-col max-md:items-start">
+    <div className="flex flex-col w-full px-4 py-2 text-white">
       <div className="flex items-center gap-4">
         <AvatarProfile />
-        <div className="flex flex-col h-full text-nowrap">
+        <div className="flex flex-col h-full">
           <h1>{username}</h1>
-          <p className="flex gap-2">{date}</p>
+          <p>{date}</p>
         </div>
-
-        <Badge variant="outline" className="self-end">
-          {tags}
-        </Badge>
+        <Badge variant="outline">{tags}</Badge>
       </div>
 
-      <div className="flex self-end justify-end w-full max-md:justify-start max-md:pt-4 ">
-        {username !== me ? (
+      <div className="flex justify-end w-full pt-2">
+        {username !== user?.username && (
           <>
             {postFor === "seeker" && (
               <button
-                onClick={postDetails}
+                onClick={handleOpenPopup}
                 className="px-2 rounded-lg text-sm bg-[#0657D0] hover:bg-[#0657D0]/50"
               >
                 Offer
@@ -54,17 +54,24 @@ export const Header = ({ username, date, tags, postFor }: InputProps) => {
             )}
             {postFor === "recruiter" && (
               <button
-                onClick={postDetails}
+                onClick={handleOpenPopup}
                 className="px-2 rounded-lg text-sm bg-[#0657D0] hover:bg-[#0657D0]/50"
               >
                 Apply
               </button>
             )}
           </>
-        ) : null}
+        )}
       </div>
+
+      {isPopupOpen && (
+        <ApplyofferPopup
+          onClose={handleClosePopup}
+          username={username}
+          postFor={postFor}
+          postId={postId}
+        />
+      )}
     </div>
   );
 };
-
-export default Header;

@@ -3,9 +3,11 @@ import { ContentPost } from "./(components)/contentPost";
 import { FooterPost } from "./(components)/footerPost";
 import { Header } from "./(components)/headerPost";
 import { getPosts } from "@/hooks/usePost";
+import { useUser } from "@/contexts/UserContext";
 
 const Post = () => {
   const [postData, setPostData] = useState<any>([]);
+  const { user } = useUser();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -17,8 +19,6 @@ const Post = () => {
     };
     fetchData();
   }, []);
-
-
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -38,11 +38,12 @@ const Post = () => {
       {postData.map((posts: any) => (
         <div key={posts.id} className="flex flex-col w-full h-auto bg-white/30 rounded-sm">
           <Header
+            postId={posts.id}
             username={posts.username}
             date={formatDate(posts.updatedAt)}
             tags={posts.tags}
             postFor={posts.postFor}
-          ></Header>
+          />
           <ContentPost title={posts.title} content={posts.content} />
           <hr className="flex mx-4 my-2 border border-white/30"/>
           <FooterPost/>

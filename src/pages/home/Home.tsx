@@ -1,7 +1,7 @@
-import { getMe } from "@/api/userServices";
 import CreatePost from "@/components/posts/createPost/CreatePost";
 import Post from "@/components/posts/Post";
 import ProfileCart from "@/components/profile/ProfileCart";
+import { useUser } from "@/contexts/UserContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,14 +9,13 @@ const Home = () => {
   const [profile, setProfile] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+  const { user } = useUser();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const profileResponse = await getMe();
-        // console.log("profileResponse", profileResponse);
-        if (profileResponse.username) {
-          setProfile(profileResponse.username);
+        if (user?.username) {
+          setProfile(user?.username);
         } else {
           navigate("/login"); // No token!!
         }
