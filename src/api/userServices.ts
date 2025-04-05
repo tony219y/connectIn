@@ -25,25 +25,7 @@ export const login = async (email: string, password: string) => {
     }
 }
 
-// export const getMe = async () => {
-//     const token = getjwtToken();
-//     const response:{id:number, username: string, email: string} = await wretch('/api/auth/me')
-//         .headers({
-//             Authorization: `Bearer ${token}`
-//         })
-//         .get()
-//         .badRequest((err: any) => {
-//             throw new Error(JSON.parse(err.message).messages);
-//         })
-//         .json();
-//     if (!response) {
-//         throw new Error('User not found');
-//     }
-    
-//     return response;
-// }
 
-// /api/userServices.ts
 export const fetcher  = async () => {
     const token = getjwtToken();
     const response:{id:number, username: string, email: string} = await wretch('/api/auth/me')

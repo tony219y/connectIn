@@ -1,5 +1,5 @@
-import { useState } from "react";
-
+import { CreateOfferApply } from "@/api/jobServices";
+import { FormEvent, useState } from "react";
 interface CreatePopupProps {
   postId:string
   onClose: () => void;
@@ -10,9 +10,11 @@ interface CreatePopupProps {
 export const ApplyofferPopup = ({postId, onClose, username, postFor }: CreatePopupProps) => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("")
-  const handleSubmit = async () => {
 
-    onClose();
+    const handleSubmit = async (e : FormEvent) => {
+    e.preventDefault()
+    await CreateOfferApply(postId, title, content);
+    // onClose();
   };
 
   return (
