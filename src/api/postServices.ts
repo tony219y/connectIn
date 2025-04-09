@@ -9,9 +9,9 @@ export const createNewPost = async (title:string, content:string, tags:string, p
             Authorization: `Bearer ${token}`
         })
         .post({ title, content, tags, postFor, visibility })
-        .badRequest((err: any) => {
-            throw new Error(JSON.parse(err.message).messages);
-        })
+        // .badRequest((err: any) => {
+        //     throw new Error(JSON.parse(err.message).messages);
+        // })
         .json();   
     if (!response) {
         throw new Error('Post not created');
@@ -26,9 +26,9 @@ export const getAllPosts = async () => {
             Authorization: `Bearer ${token}`
         })
         .get()
-        .badRequest((err: any) => {
-            throw new Error(JSON.parse(err.message).messages);
-        })
+        // .badRequest((err: any) => {
+        //     throw new Error(JSON.parse(err.message).messages);
+        // })
         .json();   
     if (!response) {
         throw new Error('Post not created');

@@ -28,8 +28,9 @@ export const getSeekerOffer = async (username: string) => {
             })
             .get().json()
         return response
-    } catch (error) {
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error : any) {
+        throw new Error(error.message)
     }
 }
 
@@ -45,22 +46,23 @@ export interface pendingProps {
     type: string
     updatedAt: string
 }
-export const pendingList : pendingProps[] =[]
 
 export const getSeekerPending = async (username: string) => {
     try {
-        const token = getjwtToken();
-        const response = await wretch(`/api/job/seeker-pending/${username}`)
-            .headers({
-                Authorization: `Bearer ${token}`
-            })
-            .get().json<pendingProps>()
-        pendingList.push(response)
-        return 'Pending list added!'
-    } catch (error) {
+      const pendingList : pendingProps[] =[]
+      const token = getjwtToken();
+      const response: any = await wretch(`/api/job/seeker-pending/${username}`)
+        .headers({ Authorization: `Bearer ${token}` })
+        .get()
+        .json();
 
+        pendingList.push(response)
+        console.log('pendingList: ', pendingList)
+      return pendingList;
+    } catch (error) {
+      console.error("Error fetching pending:", error);
     }
-}
+  };
 
 
 

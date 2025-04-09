@@ -3,15 +3,16 @@ import { ContentPost } from "./(components)/contentPost";
 import { FooterPost } from "./(components)/footerPost";
 import { Header } from "./(components)/headerPost";
 import { getPosts } from "@/hooks/usePost";
-import { useUser } from "@/contexts/UserContext";
+// import { useUser } from "@/contexts/UserContext";
 
 const Post = () => {
   const [postData, setPostData] = useState<any>([]);
-  const { user } = useUser();
+  // const { user } = useUser();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const postResponse = await getPosts();
+        console.log(typeof postResponse)
         setPostData(postResponse);
       } catch (error) {
         console.error("Error fetching posts:", error);
