@@ -1,7 +1,7 @@
 import { createContext, useContext, ReactNode } from 'react';
 import useSWR from 'swr';
 import { fetcher } from '@/api/userServices';
-import Login from '@/pages/(registration)/login/Login';
+import Landing from '@/pages/landing/Landing';
 
 // กำหนดประเภทข้อมูล user
 interface User {
@@ -27,7 +27,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const { data: user, error, isLoading } = useSWR('/api/auth/me', fetcher);
 
   if (isLoading) return <div>Loading...</div>; //Loading
-  if (error) return <Login/> //if dont have token or something wrong!
+  if (error) return <Landing/> //if dont have token or something wrong!
 
   return (
     <UserContext.Provider value={{ user, loading: isLoading, error }}>
