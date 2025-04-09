@@ -1,4 +1,4 @@
-import { getSeekerOffer, getSeekerPending } from "@/api/jobServices"
+import { getSeekerOffer, getPending } from "@/api/jobServices"
 
 
 //controll request recruiter
@@ -13,7 +13,7 @@ export const seekerOffer = async (username: string) => {
 //status apply to recruiter
 export const seekerPending = async (username: string) => {
     try {
-        const response = await getSeekerPending(username)
+        const response = await getPending(username)
         return response
 
     } catch (error) {
