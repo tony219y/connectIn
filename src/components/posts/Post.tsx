@@ -7,12 +7,10 @@ import { getPosts } from "@/hooks/usePost";
 
 const Post = () => {
   const [postData, setPostData] = useState<any>([]);
-  // const { user } = useUser();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const postResponse = await getPosts();
-        console.log(typeof postResponse)
         setPostData(postResponse);
       } catch (error) {
         console.error("Error fetching posts:", error);

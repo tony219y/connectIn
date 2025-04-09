@@ -1,4 +1,5 @@
 import { getjwtToken } from "@/hooks/useInfo"
+import { toast } from "sonner";
 import wretch from 'wretch'
 
 
@@ -40,6 +41,8 @@ export interface pendingProps {
     post_id: number,
     post_title: string,
     post_content: string,
+    post_for: string,
+    post_by: string,
     title_sender: string,
     content_sender: string,
     status: string,
@@ -47,18 +50,49 @@ export interface pendingProps {
     updatedAt: string
 }
 
-export const getSeekerPending = async (username: string) => {
+export const getPending = async (username: string) => {
     try {
       const pendingList : pendingProps[] =[]
       const token = getjwtToken();
-      const response: any = await wretch(`/api/job/seeker-pending/${username}`)
+      const response: any = await wretch(`/api/job/pending/${username}`)
         .headers({ Authorization: `Bearer ${token}` })
         .get()
+        .badRequest((e)=>{
+            toast.error(JSON.parse(e.message).message)
+        })
         .json();
-
-        pendingList.push(response)
-        console.log('pendingList: ', pendingList)
+        pendingList.push(...response)
       return pendingList;
+    } catch (error:any) {
+      console.error("Error fetching pending:", error.message);
+    }
+  };
+
+//GetOffer-Applicant
+export interface offerApplicantProps{
+    postId: number
+    postTitle: string
+    postFor: string
+    senderId: number
+    sendBy: number
+    sendMessage:string
+    updatedAt: string
+}
+export const getOfferApplicant = async (username: string, type:string) => {
+    try {
+      const offerList : offerApplicantProps[] =[]
+      const token = getjwtToken();
+      const response: any = await wretch(`/api/job/offer-applicant/${username}?type=${type}`)
+        .headers({ Authorization: `Bearer ${token}` })
+        .get()
+        .badRequest((e)=>{
+          toast.error(JSON.parse(e.message).message)
+        })
+        .json();
+        // console.log('postFor:', response[].postFor)
+        offerList.push(...response)
+        // console.log('offerList: ', offerList)
+      return offerList;
     } catch (error) {
       console.error("Error fetching pending:", error);
     }

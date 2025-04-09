@@ -1,26 +1,43 @@
-import { Requestion } from "@/components/jobs/requestion";
-import { seekerOffer } from "@/hooks/useJobs";
+import { getOfferApplicant } from "@/api/jobServices";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useUser } from "@/contexts/UserContext";
+import { Requestion } from "@/components/jobs/requestion";
 
-const SeekersOffer = () => {
-  const location = useLocation().pathname.split("/");
-  const [offerList,setOfferList] = useState([]);
-  
+const SeekersPending = () => {
+  const { user } = useUser();
+  const [offerApplicantList, setOfferApplicantList] = useState<any>([]);
+
   useEffect(() => {
-    const username = location[location.length - 1];
-    const fetchSeekerOffer = async() => {
-       const response:any = await seekerOffer(username);
-       setOfferList(response.response)
-       console.log('response: ',offerList)
+    const fetchSeekerOffer = async () => {
+      if (!user?.username) {
+        console.error("User is not logged in or username is missing.");
+        return;
+      }
+
+      try {
+        const result = await getOfferApplicant(user.username, "recruiter");
+        if (result) {
+          setOfferApplicantList(result);
+        }
+      } catch (error) {
+        console.error("Error fetching pending:", error);
+      }
     };
+
     fetchSeekerOffer();
-  }, []);
+  }, [user]);
 
   return (
     <div className="flex flex-col h-screen bg-[#070C14] text-2xl text-white px-10 pt-20">
-      <Requestion type="recruiter" />
+
+      {offerApplicantList.length === 0 ? (
+        <div className="flex w-full h-full items-center justify-center text-white">No offer found.</div>
+      ) : (
+        <Requestion data={offerApplicantList} type="recruiter" />
+      )}
+
     </div>
   );
 };
-export default SeekersOffer;
+
+export default SeekersPending;

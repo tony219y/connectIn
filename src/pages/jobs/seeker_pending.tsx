@@ -1,29 +1,24 @@
 import  Pending  from "@/components/jobs/pending";
-import { getSeekerPending } from "@/api/jobServices";
+import { getPending } from "@/api/jobServices";
 import { useEffect, useState } from "react";
-// import { useLocation } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";
-// import { pendingProps } from "@/api/jobServices";
 
 
 const SeekersPending = () => {
   const { user } = useUser();
-  
   const [pendingList, setPendingList] = useState<any>([]);
-  // const location = useLocation().pathname.split("/");
-  // const username = location[location.length - 1];
-  
+
+
   useEffect(() => {
     const fetchSeekerOffer = async () => {
       if (!user?.username) {
         console.error("User is not logged in or username is missing.");
-        return; // ถ้า username ไม่มีหรือ user เป็น undefined, ให้ return ออกจาก function
+        return;
       }
 
       try {
-        const result = await getSeekerPending(user.username);
+        const result = await getPending(user.username);
         if (result) {
-          console.log("Result from API:", result);
           setPendingList(result);
         }
       } catch (error) {
@@ -36,7 +31,12 @@ const SeekersPending = () => {
 
   return (
     <div className="flex flex-col h-screen bg-[#070C14] text-2xl text-white px-10 pt-20">
-      <Pending data={pendingList} type="Apply" />
+
+          {pendingList.length === 0 ? (
+            <div className="flex w-full h-full items-center justify-center text-white">No pending.</div>
+          ) : (
+            <Pending data={pendingList} type="recruiter" />
+          )}
     </div>
   );
 };
